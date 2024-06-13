@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Jun 2024 pada 21.16
+-- Waktu pembuatan: 13 Jun 2024 pada 06.33
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -82,7 +82,8 @@ CREATE TABLE `pelajar` (
 
 INSERT INTO `pelajar` (`pelajar_id`, `email_pelajar`, `username`, `password`) VALUES
 (1, 'wulan@gmail.com', 'wulandari', 'aae79912250d18756900f742270de7e1'),
-(2, 'budi@gmail.com', 'budi', '53b9480d3d7be11b6634301d0b01d36d');
+(2, 'budi@gmail.com', 'budi', '53b9480d3d7be11b6634301d0b01d36d'),
+(3, 'justin@gmail.com', 'justin', '8134b84030cca5285ed0e0b31ba06f10');
 
 -- --------------------------------------------------------
 
@@ -158,7 +159,7 @@ ALTER TABLE `materi`
 -- AUTO_INCREMENT untuk tabel `pelajar`
 --
 ALTER TABLE `pelajar`
-  MODIFY `pelajar_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `pelajar_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `tutors`
