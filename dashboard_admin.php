@@ -122,22 +122,22 @@ $conn->close();
                 <i class="fas fa-chart-pie"></i>
                 <div>Dashboard</div>
             </div>
-            <div class="selectors" onclick="window.location.href='course_admin.php'">
+            <div class="selectors" onclick="window.location.href='students_admin.php'">
                 <i class="fas fa-book"></i>
-                <div>Course</div>
+                <div>Students</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
-                <i class="fas fa-question-circle"></i>
-                <div>Quiz</div>
+            <div class="selectors" onclick="window.location.href='tutors_admin.php'">
+                <i class="fas fa-book"></i>
+                <div>Tutors</div>
             </div>
             <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
                 <i class="fas fa-file-alt"></i>
-                <div>Exams</div>
+                <div>Quiz</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <!-- <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
                 <i class="fas fa-user"></i>
                 <div>Profile</div>
-            </div>
+            </div> -->
         </div>
 
         <div class="body">
