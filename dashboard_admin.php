@@ -116,29 +116,30 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
-            <h1 class="logo">EDUCERDAS</h1>
-            <div class="selectors activeBar" onclick="window.location.href='dashboard_admin.php'">
-                <i class="fas fa-chart-pie"></i>
-                <div>Dashboard</div>
-            </div>
-            <div class="selectors" onclick="window.location.href='students_admin.php'">
-                <i class="fas fa-book"></i>
-                <div>Students</div>
-            </div>
-            <div class="selectors" onclick="window.location.href='tutors_admin.php'">
-                <i class="fas fa-book"></i>
-                <div>Tutors</div>
-            </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
-                <i class="fas fa-file-alt"></i>
-                <div>Quiz</div>
-            </div>
+<div class="sidebar">
+    <h1 class="logo">EDUCERDAS</h1>
+    <div class="selectors activeBar" onclick="window.location.href='dashboard_admin.php'">
+        <i class="fas fa-chart-pie"></i>
+        <div>Dashboard</div>
+    </div>
+    <div class="selectors" onclick="window.location.href='students_admin.php'">
+        <i class="fas fa-book"></i>
+        <div>Students</div>
+    </div>
+    <div class="selectors" onclick="window.location.href='tutors_admin.php'">
+        <i class="fas fa-book"></i>
+        <div>Tutors</div>
+    </div>
+    <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+        <i class="fas fa-file-alt"></i>
+        <div>Quiz</div>
+    </div>
+</div>
             <!-- <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
                 <i class="fas fa-user"></i>
                 <div>Profile</div>
-            </div> -->
-        </div>
+            </div>
+        </div> -->
 
         <div class="body">
             <div class="topBar">
