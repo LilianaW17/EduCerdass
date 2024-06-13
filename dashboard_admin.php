@@ -11,16 +11,6 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Jika nama "Pelajar" di database tidak tersedia, gunakan nama pengguna yang saat ini login
-$sql = "SELECT nama_admin FROM admin LIMIT 1";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    if (!empty($row['nama_admin'])) {
-        $username = $row['nama_admin'];
-    }
-}
-
 // Tutup koneksi
 $conn->close();
 ?>
@@ -156,11 +146,9 @@ $conn->close();
         <div class="body">
             <div class="topBar">
                 <div>
-                    <h2 class="h2">Selamat Datang, <?php echo $username; ?>!</h2>
+                    <h2 class="h2">Selamat Datang, <?php echo htmlspecialchars($username); ?>!</h2>
                 </div>
             </div>
-
-            <!-- Konten dashboard lainnya di sini -->
         </div>
     </div>
 </body>

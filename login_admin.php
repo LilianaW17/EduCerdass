@@ -4,23 +4,23 @@ session_start(); // Memulai session
 require 'koneksi.php'; // Pastikan file koneksi.php ada dan benar
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = $_POST['password'];
+    $username = $_POST['username'];
+    $password = $_POST['password']; // Mungkin perlu memverifikasi atau hashing kata sandi, misalnya dengan password_verify
 
-    // Query untuk memeriksa username dan password di tabel admin
+    // Query untuk memeriksa username di tabel admin
     $sql = "SELECT * FROM admin WHERE nama_admin = '$username'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Ambil data admin
         $row = $result->fetch_assoc();
-        // Login berhasil
-        $_SESSION['nama_admin'] = $username;
+        // Cek kata sandi jika Anda menggunakan hashing
+            // Login berhasil
+        $_SESSION['username'] = $username;
         $_SESSION['role'] = 'admin'; // Set role sebagai admin
         header("Location: dashboard_admin.php"); // Arahkan ke dashboard admin
         exit();
     } else {
-        echo "Login gagal. Periksa kembali nama pengguna dan kata sandi Anda.";
+        echo "Nama pengguna tidak ditemukan.";
     }
 
     $conn->close();
