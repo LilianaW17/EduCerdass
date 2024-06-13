@@ -1,43 +1,48 @@
 <?php
 session_start(); // Memulai session
 
-require'koneksi.php';
+require 'koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = $_POST['password'];
 
-    // $conn = koneksi(); // Menggunakan fungsi koneksi() untuk mendapatkan objek koneksi
+    if (isset($_POST['login_pelajar'])) {
+        $sql = "SELECT * FROM pelajar WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        
+        if ($user && md5($password) === $user['password']) {
+            $_SESSION['username'] = $username;
+            $_SESSION['role'] = 'Pelajar';
+            header("Location: dashboard_pelajar.php");
+            exit();
+        } else {
+            echo "Login gagal. Periksa kembali nama pengguna dan kata sandi Anda.";
+        }
+    } elseif (isset($_POST['login_tutor'])) {
+        $sql = "SELECT * FROM tutors WHERE username = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $tutor = $result->fetch_assoc();
 
-    if(isset($_POST['login_pelajar'])) {
-        $sql = "SELECT * FROM pelajar WHERE username='$username' AND password='$password'";
-        $redirect_page = "dashboard_pelajar.php";
-        $role = "Pelajar";
-    } elseif(isset($_POST['login_tutor'])) {
-        $cek_pw = md5($password);
-        $tutor = query("SELECT * FROM tutors WHERE username='$username' AND password='$cek_pw'");
-        $redirect_page = "dashboard_tutor.php";
-        $role = "Tutor";
+        if ($tutor && md5($password) === $tutor['password']) {
+            $_SESSION['username'] = $username;
+            $_SESSION['role'] = 'Tutor';
+            header("Location: dashboard_tutor.php");
+            exit();
+        } else {
+            echo "Login gagal. Periksa kembali nama pengguna dan kata sandi Anda.";
+        }
     } else {
         echo "Invalid button";
         exit();
     }
-
-    // $result = $conn->query($sql);
-
-    if ($tutor > 0) {
-        // Login berhasil
-        $_SESSION['username'] = $username; // Menyimpan username ke dalam session
-        $_SESSION['role'] = $role; // Menyimpan role ke dalam session
-        echo "Login berhasil sebagai $role";
-        // Arahkan ke halaman dashboard yang sesuai
-        header("Location: $redirect_page");
-        exit();
-    } else {
-        echo "Login gagal. Periksa kembali nama pengguna dan kata sandi Anda.";
-    }
-
-    $conn->close();
 }
 ?>
 
@@ -166,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="wrapper">
-        <form action="login.php" method="POST" onsubmit="return validateForm()">
+        <form action="login.php" method="POST">
             <h1>Login</h1>
             <div class="input-box">
                 <input type="text" name="username" id="username" placeholder="Username" required>
