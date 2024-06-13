@@ -1,7 +1,7 @@
 <?php
 session_start(); // Mulai session
 
-include 'koneksi.php';
+include 'koneksi.php'; // Menghubungkan ke database
 
 // Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
@@ -11,17 +11,25 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Jika nama "Pelajar" di database tidak tersedia, gunakan nama pengguna yang saat ini login
-$sql = "SELECT username FROM pelajar LIMIT 1";
-$result = $conn->query($sql);
+// Ambil username dari database berdasarkan session
+$sql = "SELECT username FROM pelajar WHERE username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    if (!empty($row['username'])) {
-        $username = $row['username'];
-    }
+    $username = $row['username']; // Set username sesuai dengan data dari database
+} else {
+    // Jika tidak ada pengguna yang ditemukan, logout dan arahkan kembali ke halaman login
+    session_destroy();
+    header("Location: login.php");
+    exit();
 }
 
 // Tutup koneksi
+$stmt->close();
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -139,15 +147,15 @@ $conn->close();
                 <i class="fas fa-book"></i>
                 <div>Course</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <div class="selectors" onclick="window.location.href='quiz_pelajar.php'">
                 <i class="fas fa-question-circle"></i>
                 <div>Quiz</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <div class="selectors" onclick="window.location.href='exams_pelajar.php'">
                 <i class="fas fa-file-alt"></i>
                 <div>Exams</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <div class="selectors" onclick="window.location.href='profil_pelajar.php'">
                 <i class="fas fa-user"></i>
                 <div>Profile</div>
             </div>
@@ -156,7 +164,7 @@ $conn->close();
         <div class="body">
             <div class="topBar">
                 <div>
-                    <h2 class="h2">Selamat Datang, <?php echo $username; ?>!</h2>
+                    <h2 class="h2">Selamat Datang, <?php echo htmlspecialchars($username); ?>!</h2>
                 </div>
             </div>
 

@@ -15,7 +15,7 @@ $username = $_SESSION['username'];
 include 'koneksi.php';
 
 // Query untuk mendapatkan daftar kursus beserta deskripsinya
-$sql = "SELECT nama_materi FROM materi"; // Pastikan tabel materi dan kolom nama_materi serta deskripsi sudah benar
+$sql = "SELECT nama_materi, deskripsi FROM materi"; // Pastikan tabel materi dan kolom nama_materi serta deskripsi sudah benar
 $result = $conn->query($sql);
 
 $materi = [];
@@ -120,8 +120,8 @@ $conn->close();
             <tbody>
                 <?php foreach($materi as $m): ?>
                     <tr>
-                        <td><?php echo $m['nama_materi']; ?></td>
-                        <td><?php echo $m['deskripsi']; ?></td>
+                        <td><?php echo htmlspecialchars($m['nama_materi']); ?></td>
+                        <td><?php echo htmlspecialchars($m['deskripsi']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
