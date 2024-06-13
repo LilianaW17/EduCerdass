@@ -1,26 +1,21 @@
 <?php
-session_start(); // Mulai session
+session_start();
 
 include 'koneksi.php';
-
-// Fungsi untuk mengenkripsi password dengan MD5
 function encryptPassword($password) {
     return md5($password);
 }
 
-// Proses input data dari formulir
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email_pelajar = $_POST['email_pelajar']; // Memperbarui nama variabel untuk sesuai dengan nama kolom di tabel
+    $email_pelajar = $_POST['email_pelajar'];
     $username = $_POST['username'];
-    $password = encryptPassword($_POST['password']); // Enkripsi password dengan MD5
+    $password = encryptPassword($_POST['password']);
 
-    // Query untuk menyimpan data ke tabel "pelajar"
     $sql = "INSERT INTO pelajar (email_pelajar, username, password) VALUES ('$email_pelajar', '$username', '$password')";
 
     if ($conn->query($sql) === TRUE) {
-        // Jika pendaftaran berhasil, atur session dan alihkan ke dashboard_pelajar.php
-        $_SESSION['username'] = $username; // Menyimpan username ke dalam session
-        $_SESSION['role'] = "Pelajar"; // Menyimpan role ke dalam session
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = "Pelajar";
         echo "<script>window.location.href='dashboard_pelajar.php';</script>";
         exit();
     } else {

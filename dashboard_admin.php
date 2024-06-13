@@ -1,17 +1,14 @@
 <?php
-session_start(); // Mulai session
+session_start();
 
 include 'koneksi.php';
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login_admin.php");
     exit();
 }
 
 $username = $_SESSION['username'];
-
-// Tutup koneksi
 $conn->close();
 ?>
 <!DOCTYPE html>

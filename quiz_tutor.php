@@ -1,26 +1,20 @@
 <?php
-// Memulai session
 session_start();
 
-// Periksa apakah pengguna sudah login sebagai tutor, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil username tutor dari session
 $username = $_SESSION['username'];
 
-// Koneksi ke database
 include 'koneksi.php';
 
-// Query untuk mendapatkan daftar pelajar dari tabel 'pelajar'
 $sql = "SELECT username FROM pelajar";
 $result = $conn->query($sql);
 
 $users = [];
 if ($result->num_rows > 0) {
-    // Ambil setiap username pelajar
     while ($row = $result->fetch_assoc()) {
         $users[] = $row['username'];
     }
@@ -28,7 +22,6 @@ if ($result->num_rows > 0) {
     $users[] = "Tidak ada pelajar tersedia";
 }
 
-// Data statis sebagai contoh riwayat quiz dari beberapa pelajar
 $riwayat_quiz = [
     "wulandari" => [
         ["nama_quiz" => "Quiz Basic PHP", "score" => 90]
@@ -38,7 +31,6 @@ $riwayat_quiz = [
     ]
 ];
 
-// Jika form dipost, ambil riwayat quiz dari pelajar yang dipilih
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['username']) && !empty($_POST['username'])) {
         $selected_user = $_POST['username'];
@@ -49,8 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
-// Tutup koneksi
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -77,7 +67,7 @@ $conn->close();
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Tambahkan untuk mengatur posisi tombol ke tengah */
+            text-align: center;
         }
 
         h1 {
@@ -143,8 +133,7 @@ $conn->close();
 <body>
     <div class="container">
         <h1>Riwayat Quiz Pelajar</h1>
-        
-        <!-- Form untuk memilih pelajar -->
+
         <form method="post" class="form-container">
             <label for="username">Pilih Pelajar:</label>
             <select name="username" id="username">
@@ -155,7 +144,6 @@ $conn->close();
             <button type="submit">Tampilkan Riwayat</button>
         </form>
 
-        <!-- Tabel untuk menampilkan riwayat quiz -->
         <?php if (!empty($riwayat_quiz)): ?>
             <table>
                 <thead>

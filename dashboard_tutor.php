@@ -1,30 +1,25 @@
 <?php
-session_start(); // Memulai session
+session_start();
 
 include 'koneksi.php';
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil username dari session
 $username = $_SESSION['username'];
 
-// Query untuk mendapatkan nama tutor dari tabel 'tutors' berdasarkan username
 $sql = "SELECT username FROM tutors WHERE username = '$username' LIMIT 1";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $username = $row['username']; // Gunakan username yang ada di database
+    $username = $row['username'];
 } else {
-    // Jika tidak ada hasil, gunakan username dari session
     $username = $_SESSION['username'];
 }
 
-// Tutup koneksi
 $conn->close();
 ?>
 <!DOCTYPE html>

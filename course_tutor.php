@@ -1,34 +1,25 @@
 <?php
-// Memulai session
 session_start();
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil username dari session
 $username = $_SESSION['username'];
-
-// Koneksi ke database
 include 'koneksi.php';
 
-// Query untuk mendapatkan daftar kursus beserta deskripsinya
-$sql = "SELECT nama_materi, deskripsi FROM materi"; // Pastikan tabel materi dan kolom nama_materi serta deskripsi sudah benar
+$sql = "SELECT nama_materi, deskripsi FROM materi";
 $result = $conn->query($sql);
 
 $materi = [];
 if ($result->num_rows > 0) {
-    // Ambil setiap baris sebagai array
     while ($row = $result->fetch_assoc()) {
         $materi[] = $row;
     }
 } else {
     $materi[] = ["nama_materi" => "Tidak ada materi tersedia", "deskripsi" => ""];
 }
-
-// Tutup koneksi
 $conn->close();
 ?>
 <!DOCTYPE html>

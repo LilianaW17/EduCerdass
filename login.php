@@ -1,5 +1,5 @@
 <?php
-session_start(); // Memulai session
+session_start();
 
 require 'koneksi.php';
 

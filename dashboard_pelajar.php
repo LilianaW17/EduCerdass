@@ -1,9 +1,8 @@
 <?php
-session_start(); // Mulai session
+session_start();
 
-include 'koneksi.php'; // Menghubungkan ke database
+include 'koneksi.php';
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
@@ -11,7 +10,6 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 
 $username = $_SESSION['username'];
 
-// Ambil username dari database berdasarkan session
 $sql = "SELECT username FROM pelajar WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $username);
@@ -20,9 +18,8 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $username = $row['username']; // Set username sesuai dengan data dari database
+    $username = $row['username'];
 } else {
-    // Jika tidak ada pengguna yang ditemukan, logout dan arahkan kembali ke halaman login
     session_destroy();
     header("Location: login.php");
     exit();

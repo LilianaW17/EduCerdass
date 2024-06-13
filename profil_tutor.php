@@ -1,27 +1,21 @@
 <?php
-session_start(); // Memulai session
+session_start();
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil data dari session
 $username = $_SESSION['username'];
 $firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : '';
 $lastName = isset($_SESSION['last_name']) ? $_SESSION['last_name'] : '';
 $gender = isset($_SESSION['gender']) ? $_SESSION['gender'] : '';
 
-// Jika formulir disubmit, kita bisa memproses data (meskipun dalam contoh ini tidak benar-benar memprosesnya)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Di sini bisa diberikan proses penyimpanan data ke database atau ke sesi lainnya
-    // Namun, untuk contoh ini, kita hanya akan menampilkan kembali data yang dimasukkan
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $gender = $_POST['gender'];
 
-    // Simpan kembali ke session untuk ditampilkan kembali di form
     $_SESSION['first_name'] = $firstName;
     $_SESSION['last_name'] = $lastName;
     $_SESSION['gender'] = $gender;

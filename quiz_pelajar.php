@@ -1,26 +1,20 @@
 <?php
-// Memulai session
 session_start();
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil username dari session
 $username = $_SESSION['username'];
 
-// Koneksi ke database
 include 'koneksi.php';
 
-// Data statis sebagai contoh riwayat quiz
 $riwayat_quiz = [
     ["nama_quiz" => "Quiz Basic PHP", "score" => 90],
     ["nama_quiz" => "Quiz Basic Javascript", "score" => 83]
 ];
 
-// Tutup koneksi
 $conn->close();
 ?>
 <!DOCTYPE html>

@@ -1,34 +1,25 @@
 <?php
-// Memulai session
 session_start();
 
-// Periksa apakah pengguna sudah login, jika belum, arahkan kembali ke halaman login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil username dari session
 $username = $_SESSION['username'];
-
-// Koneksi ke database
 include 'koneksi.php';
 
-// Query untuk mendapatkan daftar kursus
-$sql = "SELECT nama_materi FROM materi"; // Pastikan tabel materi dan kolom nama_materi sudah benar
+$sql = "SELECT nama_materi FROM materi";
 $result = $conn->query($sql);
 
 $materi = [];
 if ($result->num_rows > 0) {
-    // Ambil setiap baris sebagai array
     while($row = $result->fetch_assoc()) {
         $materi[] = $row['nama_materi'];
     }
 } else {
     $materi[] = "Tidak ada materi tersedia";
 }
-
-// Tutup koneksi
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -55,7 +46,7 @@ $conn->close();
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Tambahkan untuk mengatur posisi tombol ke tengah */
+            text-align: center;
         }
 
         h1 {
@@ -85,7 +76,7 @@ $conn->close();
         .button-container {
             margin-top: 20px;
             display: flex;
-            justify-content: center; /* Untuk memposisikan tombol di tengah */
+            justify-content: center;
         }
 
         button {
