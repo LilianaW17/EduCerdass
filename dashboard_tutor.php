@@ -142,15 +142,15 @@ $conn->close();
                 <i class="fas fa-book"></i>
                 <div>Course</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <div class="selectors" onclick="window.location.href='quiz_tutor.php'">
                 <i class="fas fa-question-circle"></i>
                 <div>Quiz</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <div class="selectors" onclick="window.location.href='exams_tutor.php'">
                 <i class="fas fa-file-alt"></i>
                 <div>Exams</div>
             </div>
-            <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
+            <div class="selectors" onclick="window.location.href='profile_tutor.php'">
                 <i class="fas fa-user"></i>
                 <div>Profile</div>
             </div>
