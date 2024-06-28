@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Jun 2024 pada 06.33
+-- Waktu pembuatan: 28 Jun 2024 pada 02.40
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -73,17 +73,32 @@ CREATE TABLE `pelajar` (
   `pelajar_id` int(11) NOT NULL,
   `email_pelajar` varchar(255) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `password` char(32) NOT NULL
+  `password` char(32) NOT NULL,
+  `nama_depan` varchar(50) NOT NULL,
+  `nama_belakang` varchar(50) NOT NULL,
+  `jenis_kelamin` enum('Pria','Wanita') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `pelajar`
 --
 
-INSERT INTO `pelajar` (`pelajar_id`, `email_pelajar`, `username`, `password`) VALUES
-(1, 'wulan@gmail.com', 'wulandari', 'aae79912250d18756900f742270de7e1'),
-(2, 'budi@gmail.com', 'budi', '53b9480d3d7be11b6634301d0b01d36d'),
-(3, 'justin@gmail.com', 'justin', '8134b84030cca5285ed0e0b31ba06f10');
+INSERT INTO `pelajar` (`pelajar_id`, `email_pelajar`, `username`, `password`, `nama_depan`, `nama_belakang`, `jenis_kelamin`) VALUES
+(1, 'wulan@gmail.com', 'wulandari', 'aae79912250d18756900f742270de7e1', 'Ajeng', 'Wulandari', ''),
+(2, 'budi@gmail.com', 'budi', '53b9480d3d7be11b6634301d0b01d36d', 'Budi', 'Vincent', 'Pria'),
+(3, 'justin@gmail.com', 'justin', '8134b84030cca5285ed0e0b31ba06f10', 'Justin', 'William', 'Pria'),
+(4, 'gerald@gmail.com', 'gerald', '98302eb9727009d08199b25b7b72b1cb', 'Gerald', 'Frendy', 'Pria');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `quiz`
+--
+
+CREATE TABLE `quiz` (
+  `quiz_id` int(11) NOT NULL,
+  `nama_quiz` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -133,6 +148,12 @@ ALTER TABLE `pelajar`
   ADD UNIQUE KEY `email_pelajar` (`email_pelajar`);
 
 --
+-- Indeks untuk tabel `quiz`
+--
+ALTER TABLE `quiz`
+  ADD PRIMARY KEY (`quiz_id`);
+
+--
 -- Indeks untuk tabel `tutors`
 --
 ALTER TABLE `tutors`
@@ -159,7 +180,13 @@ ALTER TABLE `materi`
 -- AUTO_INCREMENT untuk tabel `pelajar`
 --
 ALTER TABLE `pelajar`
-  MODIFY `pelajar_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `pelajar_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `quiz`
+--
+ALTER TABLE `quiz`
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `tutors`
