@@ -7,20 +7,17 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 }
 
 $username = $_SESSION['username'];
-$firstName = isset($_SESSION['first_name']) ? $_SESSION['first_name'] : '';
-$lastName = isset($_SESSION['last_name']) ? $_SESSION['last_name'] : '';
-$gender = isset($_SESSION['gender']) ? $_SESSION['gender'] : '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstName = $_POST['first_name'];
-    $lastName = $_POST['last_name'];
-    $gender = $_POST['gender'];
+include 'koneksi.php';
 
-    $_SESSION['first_name'] = $firstName;
-    $_SESSION['last_name'] = $lastName;
-    $_SESSION['gender'] = $gender;
-}
-
+$sql = "SELECT username, nama_depan, nama_belakang, email_pelajar, jenis_kelamin FROM pelajar WHERE username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$stmt->bind_result($userName, $firstName, $lastName, $email, $gender);
+$stmt->fetch();
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -46,43 +43,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            text-align: center;
         }
         .container h2 {
-            text-align: center;
             color: #333;
         }
-        .form-group {
-            margin-bottom: 20px;
+        .profile-item {
+            margin-bottom: 15px;
+            font-size: 16px;
         }
-        .form-group label {
-            display: block;
+        .profile-item span {
             font-weight: bold;
-            margin-bottom: 5px;
         }
-        .form-group input[type="text"], .form-group select {
-            width: calc(100% - 12px);
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .form-group select {
-            width: 100%;
-        }
-        .form-group button {
+        .edit-button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
             background-color: #333;
             color: #fff;
             border: none;
-            padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
+            text-decoration: none;
         }
-        .form-group button:hover {
+        .edit-button:hover {
             background-color: #555;
         }
         .logout {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .logout a {
             color: #333;
@@ -107,32 +96,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h2>Profil Pelajar</h2>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label for="first_name">Nama Depan:</label>
-                <input type="text" id="first_name" name="first_name" value="<?php echo htmlspecialchars($firstName); ?>">
-            </div>
-            <div class="form-group">
-                <label for="last_name">Nama Belakang:</label>
-                <input type="text" id="last_name" name="last_name" value="<?php echo htmlspecialchars($lastName); ?>">
-            </div>
-            <div class="form-group">
-                <label for="gender">Jenis Kelamin:</label>
-                <select id="gender" name="gender">
-                    <option value="L" <?php if ($gender === 'L') echo 'selected'; ?>>Laki-laki</option>
-                    <option value="P" <?php if ($gender === 'P') echo 'selected'; ?>>Perempuan</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit">Simpan</button>
-            </div>
-        </form>
+        <div class="profile-item">
+            <span>Username:</span> <?php echo htmlspecialchars($userName); ?>
+        </div>
+        <div class="profile-item">
+            <span>Nama Depan:</span> <?php echo htmlspecialchars($firstName); ?>
+        </div>
+        <div class="profile-item">
+            <span>Nama Belakang:</span> <?php echo htmlspecialchars($lastName); ?>
+        </div>
+        <div class="profile-item">
+            <span>Email:</span> <?php echo htmlspecialchars($email); ?>
+        </div>
+        <div class="profile-item">
+            <span>Jenis Kelamin:</span> <?php echo htmlspecialchars($gender); ?>
+        </div>
+        <a href="edit_profil_pelajar.php" class="edit-button">Edit Profil</a>
         <div class="back-button">
             <a href="dashboard_pelajar.php">Kembali</a>
         </div>
         <div class="logout">
             <a href="logout.php">Logout</a>
         </div>
+
     </div>
 </body>
 </html>

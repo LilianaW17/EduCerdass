@@ -25,6 +25,13 @@ if ($result->num_rows > 0) {
     exit();
 }
 
+// Fungsi logout
+if (isset($_POST['logout'])) {
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+
 // Tutup koneksi
 $stmt->close();
 $conn->close();
@@ -130,6 +137,23 @@ $conn->close();
             margin-bottom: 30px;
             color: #240750;
         }
+
+        .logout {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            width: calc(100% - 60px);
+            padding: 10px;
+            background-color: #1e1747;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout:hover {
+            background-color: #462f8e;
+        }
     </style>
 </head>
 <body>
@@ -156,8 +180,11 @@ $conn->close();
                 <i class="fas fa-user"></i>
                 <div>Profile</div>
             </div>
+            <div class="selectors" onclick="window.location.href='logout.php'">
+                <i class="fas fa-sign-out-alt"></i>
+                <div>Logout</div>
+            </div>
         </div>
-
         <div class="body">
             <div class="topBar">
                 <div>
