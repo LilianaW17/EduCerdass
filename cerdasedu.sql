@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 28 Jun 2024 pada 02.40
+-- Waktu pembuatan: 28 Jun 2024 pada 04.31
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -61,7 +61,8 @@ CREATE TABLE `materi` (
 INSERT INTO `materi` (`id_materi`, `tutor_id`, `nama_materi`, `deskripsi`) VALUES
 (1, 1, 'Basic PHP', 'Ini materi awal untuk mempelajari PHP'),
 (2, 3, 'Basic Javascript', 'Ini materi awal untuk mempelajari Javascript'),
-(3, 2, 'Basic CSS', 'Ini materi awal untuk mempelajari CSS');
+(3, 2, 'Basic CSS', 'Ini materi awal untuk mempelajari CSS'),
+(4, 1, 'PHP Dasar', 'Memperkenalkan apa itu PHP');
 
 -- --------------------------------------------------------
 
@@ -97,7 +98,8 @@ INSERT INTO `pelajar` (`pelajar_id`, `email_pelajar`, `username`, `password`, `n
 
 CREATE TABLE `quiz` (
   `quiz_id` int(11) NOT NULL,
-  `nama_quiz` varchar(255) NOT NULL
+  `nama_quiz` varchar(255) NOT NULL,
+  `pelajar_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -151,7 +153,8 @@ ALTER TABLE `pelajar`
 -- Indeks untuk tabel `quiz`
 --
 ALTER TABLE `quiz`
-  ADD PRIMARY KEY (`quiz_id`);
+  ADD PRIMARY KEY (`quiz_id`),
+  ADD KEY `fk_pelajar` (`pelajar_id`);
 
 --
 -- Indeks untuk tabel `tutors`
@@ -174,7 +177,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT untuk tabel `materi`
 --
 ALTER TABLE `materi`
-  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_materi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `pelajar`
@@ -203,6 +206,12 @@ ALTER TABLE `tutors`
 --
 ALTER TABLE `materi`
   ADD CONSTRAINT `materi_ibfk_1` FOREIGN KEY (`tutor_id`) REFERENCES `tutors` (`tutor_id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `quiz`
+--
+ALTER TABLE `quiz`
+  ADD CONSTRAINT `fk_pelajar` FOREIGN KEY (`pelajar_id`) REFERENCES `pelajar` (`pelajar_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
