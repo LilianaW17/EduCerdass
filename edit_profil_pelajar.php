@@ -34,7 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $newUsername;
         }
 
-        $successMessage = "Profil berhasil diperbarui!";
+        echo "Profil berhasil diperbarui!";
+        header("Location: profil_pelajar.php");
     } else {
         echo "Terjadi kesalahan saat memperbarui profil: " . $stmt->error;
     }
