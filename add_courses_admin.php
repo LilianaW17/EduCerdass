@@ -2,18 +2,18 @@
 session_start();
 
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: login_admin.php");
     exit();
 }
 
 include 'koneksi.php';
 
-$sql = "SELECT tutor_id, username FROM tutors";
-$result = $conn->query($sql);
+$sql_tutor = "SELECT tutor_id, username FROM tutors";
+$result_tutor = $conn->query($sql_tutor);
 
 $tutors = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($result_tutor->num_rows > 0) {
+    while ($row = $result_tutor->fetch_assoc()) {
         $tutors[] = $row;
     }
 }
@@ -25,7 +25,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Materi - EduCerdas</title>
+    <title>Tambah Course - EduCerdas</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -40,10 +40,11 @@ $conn->close();
 
         .container {
             background-color: #fff;
-            width: 50%;
+            width: 80%;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         h1 {
@@ -55,7 +56,8 @@ $conn->close();
         form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -88,36 +90,37 @@ $conn->close();
         button:hover {
             background-color: #3d107f;
         }
-
-        .back-button {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Tambah Materi Baru</h1>
+        <h1>Tambah Course</h1>
         <form action="proses_tambah_materi.php" method="POST">
-            <label for="nama_materi">Nama Materi:</label>
-            <input type="text" id="nama_materi" name="nama_materi" required>
-            
-            <label for="deskripsi">Deskripsi:</label>
-            <textarea id="deskripsi" name="deskripsi" rows="5" required></textarea>
-            
-            <label for="tutor_id">Tutor:</label>
-            <select id="tutor_id" name="tutor_id" required>
-                <option value="">Pilih Tutor</option>
-                <?php foreach($tutors as $tutor): ?>
-                    <option value="<?php echo $tutor['tutor_id']; ?>"><?php echo htmlspecialchars($tutor['username']); ?></option>
-                <?php endforeach; ?>
-            </select>
-            
-            <button type="submit">Tambah Materi</button>
+            <div>
+                <label for="nama_materi">Nama Materi:</label>
+                <input type="text" id="nama_materi" name="nama_materi" required>
+            </div>
+            <div>
+                <label for="deskripsi">Deskripsi:</label>
+                <textarea id="deskripsi" name="deskripsi" rows="4" required></textarea>
+            </div>
+            <div>
+                <label for="tutor">Tutor:</label>
+                <select id="tutor" name="tutor_id" required>
+                    <option value="" disabled selected>Pilih Tutor</option>
+                    <?php foreach($tutors as $tutor): ?>
+                        <option value="<?php echo $tutor['tutor_id']; ?>">
+                            <?php echo htmlspecialchars($tutor['username']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <button type="submit" name="submit">Tambah Course</button>
+            </div>
         </form>
-        <div class="back-button">
-            <button onclick="window.location.href='course_tutor.php'">Kembali</button>
+        <div>
+            <button onclick="window.location.href='courses_admin.php'">Kembali</button>
         </div>
     </div>
 </body>

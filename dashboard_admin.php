@@ -134,11 +134,11 @@ $conn->close();
                 <i class="fas fa-book"></i>
                 <div>Courses</div>
             </div>
-            <div class="selectors" onclick="window.location.href='quiz_admin.php'">
+            <div class="selectors" onclick="window.location. href='quiz_admin.php'">
                 <i class="fas fa-file-alt"></i>
                 <div>Quizzes</div>
             </div>
-            <div class="selectors" onclick="window.location.href='login_admin.php'">
+            <div class="selectors" onclick="window.location.href='login_tutor.php'">
                 <i class="fas fa-sign-out-alt"></i>
                 <div>Logout</div>
             </div>

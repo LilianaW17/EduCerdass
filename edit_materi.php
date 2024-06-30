@@ -8,7 +8,6 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 
 include 'koneksi.php';
 
-// Ambil daftar tutor untuk dropdown
 $sql_tutor = "SELECT tutor_id, username FROM tutors";
 $result_tutor = $conn->query($sql_tutor);
 
@@ -19,7 +18,6 @@ if ($result_tutor->num_rows > 0) {
     }
 }
 
-// Ambil data materi untuk ditampilkan
 $sql_materi = "SELECT id_materi, nama_materi, deskripsi, tutor_id FROM materi";
 $result_materi = $conn->query($sql_materi);
 
@@ -176,7 +174,6 @@ $conn->close();
             <button onclick="window.location.href='course_tutor.php'">Kembali</button>
         </div>
     </div>
-
     <script>
         function confirmDelete(id) {
             if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {

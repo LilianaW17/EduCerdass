@@ -1,21 +1,17 @@
 <?php
 session_start();
 
-// Cek apakah pengguna telah login
 if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Ambil username dari session
 $currentUsername = $_SESSION['username'];
 
 include 'koneksi.php';
 
-// Variabel untuk pesan sukses
 $successMessage = '';
 
-// Jika form disubmit, proses perubahan data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newUsername = $_POST['username'];
     $firstName = $_POST['first_name'];
@@ -23,34 +19,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $gender = $_POST['gender'];
 
-    // Cek apakah ada file yang diunggah
     if ($_FILES['foto_profil']['name']) {
-        // Lokasi penyimpanan gambar
         $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["foto_profil"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Periksa apakah file yang diunggah adalah gambar
         $check = getimagesize($_FILES["foto_profil"]["tmp_name"]);
         if ($check === false) {
             echo "File bukan gambar.";
             $uploadOk = 0;
         }
 
-        // Periksa ukuran file (misalnya maksimum 500KB)
         if ($_FILES["foto_profil"]["size"] > 500000) {
             echo "File terlalu besar.";
             $uploadOk = 0;
         }
 
-        // Izinkan format tertentu
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
             echo "Hanya format JPG, JPEG, PNG, dan GIF yang diperbolehkan.";
             $uploadOk = 0;
         }
 
-        // Cek apakah upload ok
         if ($uploadOk == 1) {
             if (move_uploaded_file($_FILES["foto_profil"]["tmp_name"], $target_file)) {
                 echo "File " . htmlspecialchars(basename($_FILES["foto_profil"]["name"])) . " telah diunggah.";
@@ -60,19 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Update data dalam database
     $sql = "UPDATE pelajar SET username=?, nama_depan=?, nama_belakang=?, email_pelajar=?, jenis_kelamin=?, foto_profil=? WHERE username=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssssss", $newUsername, $firstName, $lastName, $email, $gender, $target_file, $currentUsername);
 
     if ($stmt->execute()) {
-        // Update username di session jika username berubah
         if ($newUsername !== $currentUsername) {
             $_SESSION['username'] = $newUsername;
         }
 
         $successMessage = "Profil berhasil diperbarui!";
-        // header("Location: profil_pelajar.php"); // Redirect setelah update
     } else {
         echo "Terjadi kesalahan saat memperbarui profil: " . $stmt->error;
     }
@@ -80,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 
-// Ambil data pelajar dari database
 $sql = "SELECT username, nama_depan, nama_belakang, email_pelajar, jenis_kelamin, foto_profil FROM pelajar WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $currentUsername);

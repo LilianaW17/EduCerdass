@@ -10,7 +10,6 @@ $username = $_SESSION['username'];
 
 include 'koneksi.php';
 
-// Ambil pelajar_id berdasarkan username yang login
 $sql = "SELECT pelajar_id FROM pelajar WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $username);
@@ -26,7 +25,6 @@ if ($result->num_rows > 0) {
 }
 $stmt->close();
 
-// Ambil data nilai dan nama quiz dari tabel nilai dan quiz
 $sql = "
     SELECT q.nama_quiz, n.nilai_quiz
     FROM nilai n

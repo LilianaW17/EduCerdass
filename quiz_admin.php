@@ -173,7 +173,7 @@ $conn->close();
         <?php endif; ?>
 
         <div class="button-container">
-            <button onclick="window.location.href='dashboard_tutor.php'">Kembali</button>
+            <button onclick="window.location.href='dashboard_admin.php'">Kembali</button>
         </div>
     </div>
 </body>

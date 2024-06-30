@@ -10,11 +10,9 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 
 $tutor_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Inisialisasi variabel pesan
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Ambil data dari form
     $username = $_POST['username'];
     $nama_depan = $_POST['nama_depan'];
     $nama_belakang = $_POST['nama_belakang'];
@@ -24,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $alamat = $_POST['alamat'];
     $bidang_ahli = $_POST['bidang_ahli'];
 
-    // Update data ke database
     $sql_update = "UPDATE tutors SET 
                     username = '$username', 
                     nama_depan = '$nama_depan', 
@@ -43,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Ambil data tutor yang akan diedit
 $sql = "SELECT * FROM tutors WHERE tutor_id = $tutor_id";
 $result = $conn->query($sql);
 

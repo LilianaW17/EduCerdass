@@ -8,11 +8,9 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit();
 }
 
-// Inisialisasi variabel pesan
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Ambil data dari form
     $username = $_POST['username'];
     $password = $_POST['password'];
     $nama_depan = $_POST['nama_depan'];
@@ -23,10 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $alamat = $_POST['alamat'];
     $bidang_ahli = $_POST['bidang_ahli'];
 
-    // Hash password sebelum menyimpannya ke database
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Insert data ke database
     $sql_insert = "INSERT INTO tutors (username, password, nama_depan, nama_belakang, jenis_kelamin, email_tutor, nomor_telepon, alamat, bidang_ahli) 
                    VALUES ('$username', '$hashed_password', '$nama_depan', '$nama_belakang', '$jenis_kelamin', '$email_tutor', '$nomor_telepon', '$alamat', '$bidang_ahli')";
 
