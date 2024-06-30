@@ -127,26 +127,29 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
-            <h1 class="logo">EDUCERDAS</h1>
-            <div class="selectors activeBar" onclick="window.location.href='dashboard_tutor.php'">
-                <i class="fas fa-chart-pie"></i>
-                <div>Dashboard</div>
-            </div>
-            <div class="selectors" onclick="window.location.href='course_tutor.php'">
-                <i class="fas fa-book"></i>
-                <div>Course</div>
-            </div>
-            <div class="selectors" onclick="window.location.href='quiz_tutor.php'">
-                <i class="fas fa-question-circle"></i>
-                <div>Quiz</div>
-            </div>
-            <div class="selectors" onclick="window.location.href='profil_tutor.php'">
-                <i class="fas fa-user"></i>
-                <div>Profile</div>
-            </div>
-        </div>
-
+    <div class="sidebar">
+    <h1 class="logo">EDUCERDAS</h1>
+    <div class="selectors activeBar" onclick="window.location.href='dashboard_tutor.php'">
+        <i class="fas fa-chart-pie"></i>
+        <div>Dashboard</div>
+    </div>
+    <div class="selectors" onclick="window.location.href='course_tutor.php'">
+        <i class="fas fa-book"></i>
+        <div>Course</div>
+    </div>
+    <div class="selectors" onclick="window.location.href='quiz_tutor.php'">
+        <i class="fas fa-question-circle"></i>
+        <div>Quiz</div>
+    </div>
+    <div class="selectors" onclick="window.location.href='profil_tutor.php'">
+        <i class="fas fa-user"></i>
+        <div>Profile</div>
+    </div>
+    <div class="selectors" onclick="window.location.href='logout.php'">
+        <i class="fas fa-sign-out-alt"></i>
+        <div>Logout</div>
+    </div>
+</div>
         <div class="body">
             <div class="topBar">
                 <div>

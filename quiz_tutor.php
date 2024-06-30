@@ -10,37 +10,44 @@ $username = $_SESSION['username'];
 
 include 'koneksi.php';
 
-$sql = "SELECT username FROM pelajar";
-$result = $conn->query($sql);
+// Ambil daftar username pelajar
+$sql_users = "SELECT pelajar_id, username FROM pelajar";
+$result_users = $conn->query($sql_users);
 
 $users = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $users[] = $row['username'];
+if ($result_users->num_rows > 0) {
+    while ($row_users = $result_users->fetch_assoc()) {
+        $users[$row_users['pelajar_id']] = $row_users['username'];
     }
 } else {
-    $users[] = "Tidak ada pelajar tersedia";
+    $users[0] = "Tidak ada pelajar tersedia";
 }
 
-$riwayat_quiz = [
-    "wulandari" => [
-        ["nama_quiz" => "Quiz Basic PHP", "score" => 90]
-    ],
-    "justin" => [
-        ["nama_quiz" => "Quiz Basic HTML", "score" => 100]
-    ]
-];
+$riwayat_quiz = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['username']) && !empty($_POST['username'])) {
-        $selected_user = $_POST['username'];
-        if (array_key_exists($selected_user, $riwayat_quiz)) {
-            $riwayat_quiz = $riwayat_quiz[$selected_user];
-        } else {
-            $riwayat_quiz = [];
+    if (isset($_POST['pelajar_id']) && !empty($_POST['pelajar_id'])) {
+        $selected_pelajar_id = $_POST['pelajar_id'];
+        
+        // Query untuk mendapatkan riwayat quiz dari pelajar yang dipilih
+        $sql_quiz = "SELECT quiz.nama_quiz, nilai.nilai_quiz AS score
+                     FROM nilai
+                     JOIN quiz ON nilai.quiz_id = quiz.quiz_id
+                     WHERE nilai.pelajar_id = ?";
+
+        $stmt = $conn->prepare($sql_quiz);
+        $stmt->bind_param("i", $selected_pelajar_id);
+        $stmt->execute();
+        $result_quiz = $stmt->get_result();
+
+        while ($row_quiz = $result_quiz->fetch_assoc()) {
+            $riwayat_quiz[] = $row_quiz;
         }
+
+        $stmt->close();
     }
 }
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -135,10 +142,12 @@ $conn->close();
         <h1>Riwayat Quiz Pelajar</h1>
 
         <form method="post" class="form-container">
-            <label for="username">Pilih Pelajar:</label>
-            <select name="username" id="username">
-                <?php foreach ($users as $user): ?>
-                    <option value="<?php echo htmlspecialchars($user); ?>"><?php echo htmlspecialchars($user); ?></option>
+            <label for="pelajar_id">Pilih Pelajar:</label>
+            <select name="pelajar_id" id="pelajar_id">
+                <?php foreach ($users as $pelajar_id => $username): ?>
+                    <option value="<?php echo htmlspecialchars($pelajar_id); ?>" <?php if (isset($selected_pelajar_id) && $pelajar_id == $selected_pelajar_id) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars($username); ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
             <button type="submit">Tampilkan Riwayat</button>
@@ -161,8 +170,8 @@ $conn->close();
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php else: ?>
-            <p>Belum ada riwayat quiz untuk pelajar yang dipilih.</p>
+        <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+            <p>Tidak ada riwayat quiz untuk pelajar yang dipilih.</p>
         <?php endif; ?>
 
         <div class="button-container">
