@@ -8,10 +8,17 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit();
 }
 
-$username = $_SESSION['username'];
+$pelajar_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$sql = "SELECT * FROM pelajar";
+$sql = "SELECT * FROM pelajar WHERE pelajar_id = $pelajar_id";
 $result = $conn->query($sql);
+
+if ($result->num_rows == 1) {
+    $row = $result->fetch_assoc();
+} else {
+    echo "Data tidak ditemukan.";
+    exit();
+}
 
 $conn->close();
 ?>
@@ -19,7 +26,7 @@ $conn->close();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>List Pelajar</title>
+    <title>Detail Pelajar</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -30,7 +37,7 @@ $conn->close();
             padding: 0;
         }
         .container {
-            width: 80%;
+            width: 50%;
             margin: 50px auto;
             padding: 20px;
             background: #fff;
@@ -46,27 +53,16 @@ $conn->close();
             border-collapse: collapse;
         }
         th, td {
-            padding: 15px;
+            padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
         }
         th {
+            width: 30%;
             background-color: #5A67D8;
             color: white;
         }
         tr:hover {
             background-color: #f5f5f5;
-        }
-        .button-detail {
-            background: #48BB78;
-            color: white;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-        .button-detail:hover {
-            background: #38A169;
         }
         .button-back {
             display: block;
@@ -83,34 +79,34 @@ $conn->close();
         .button-back:hover {
             background: #2B6CB0;
         }
-        a {
-            text-decoration: none;
-            color: white;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>List Pelajar</h1>
+        <h1>Detail Pelajar</h1>
         <table>
             <tr>
-                <th>Username</th>
-                <th>Aksi</th>
+                <th>Nama Depan</th>
+                <td><?php echo htmlspecialchars($row['nama_depan']); ?></td>
             </tr>
-            <?php
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                            <td>" . htmlspecialchars($row["username"]) . "</td>
-                            <td><a href='detail_pelajar.php?id=" . htmlspecialchars($row["pelajar_id"]) . "' class='button-detail'>Detail</a></td>
-                          </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='2'>Tidak ada data.</td></tr>";
-            }
-            ?>
+            <tr>
+                <th>Nama Belakang</th>
+                <td><?php echo htmlspecialchars($row['nama_belakang']); ?></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><?php echo htmlspecialchars($row['email_pelajar']); ?></td>
+            </tr>
+            <tr>
+                <th>Jenis Kelamin</th>
+                <td><?php echo htmlspecialchars($row['jenis_kelamin']); ?></td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td><?php echo htmlspecialchars($row['username']); ?></td>
+            </tr>
         </table>
-        <a href="dashboard_admin.php" class="button-back">Kembali</a>
+        <a href="students_admin.php" class="button-back">Kembali</a>
     </div>
 </body>
 </html>

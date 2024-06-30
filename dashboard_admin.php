@@ -116,35 +116,38 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-<div class="sidebar">
-    <h1 class="logo">EDUCERDAS</h1>
-    <div class="selectors activeBar" onclick="window.location.href='dashboard_admin.php'">
-        <i class="fas fa-chart-pie"></i>
-        <div>Dashboard</div>
-    </div>
-    <div class="selectors" onclick="window.location.href='students_admin.php'">
-        <i class="fas fa-book"></i>
-        <div>Students</div>
-    </div>
-    <div class="selectors" onclick="window.location.href='tutors_admin.php'">
-        <i class="fas fa-book"></i>
-        <div>Tutors</div>
-    </div>
-    <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
-        <i class="fas fa-file-alt"></i>
-        <div>Quiz</div>
-    </div>
-</div>
-            <!-- <div class="selectors" onclick="alert('Fitur ini belum tersedia')">
-                <i class="fas fa-user"></i>
-                <div>Profile</div>
+        <div class="sidebar">
+            <h1 class="logo">EDUCERDAS</h1>
+            <div class="selectors activeBar" onclick="window.location.href='dashboard_admin.php'">
+                <i class="fas fa-chart-pie"></i>
+                <div>Dashboard</div>
             </div>
-        </div> -->
+            <div class="selectors" onclick="window.location.href='students_admin.php'">
+                <i class="fas fa-user-graduate"></i>
+                <div>Students</div>
+            </div>
+            <div class="selectors" onclick="window.location.href='tutors_admin.php'">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <div>Tutors</div>
+            </div>
+            <div class="selectors" onclick="window.location.href='courses_admin.php'">
+                <i class="fas fa-book"></i>
+                <div>Courses</div>
+            </div>
+            <div class="selectors" onclick="window.location.href='quiz_admin.php'">
+                <i class="fas fa-file-alt"></i>
+                <div>Quizzes</div>
+            </div>
+            <div class="selectors" onclick="window.location.href='login_admin.php'">
+                <i class="fas fa-sign-out-alt"></i>
+                <div>Logout</div>
+            </div>
+        </div>
 
         <div class="body">
             <div class="topBar">
                 <div>
-                    <h2 class="h2">Selamat Datang, <?php echo htmlspecialchars($username); ?>!</h2>
+                    <h2 class="h2">Welcome, <?php echo htmlspecialchars($username); ?>!</h2>
                 </div>
             </div>
         </div>
