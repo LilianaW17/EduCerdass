@@ -153,11 +153,11 @@ $stmt->close();
                 <input type="text" id="bidang_ahli" name="bidang_ahli" value="<?php echo htmlspecialchars($bidangAhli); ?>" readonly>
             </div>
         </form>
-        <div class="back-button">
-            <a href="dashboard_tutor.php">Kembali</a>
-        </div>
         <div class="edit-profile">
             <a href="edit_profil_tutor.php">Edit Profil</a>
+        </div>
+        <div class="back-button">
+            <a href="dashboard_tutor.php">Kembali</a>
         </div>
         <!-- <div class="logout">
             <a href="logout.php">Logout</a>
