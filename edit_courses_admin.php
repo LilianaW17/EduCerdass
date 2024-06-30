@@ -143,7 +143,7 @@ $conn->close();
     <script>
         function confirmDelete(id) {
             if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
-                window.location.href = 'hapus_materi.php?id=' + id;
+                window.location.href = 'hapus_materi_admin.php?id=' + id;
             }
         }
     </script>

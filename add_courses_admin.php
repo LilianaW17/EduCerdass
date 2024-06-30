@@ -95,7 +95,7 @@ $conn->close();
 <body>
     <div class="container">
         <h1>Tambah Course</h1>
-        <form action="proses_tambah_materi.php" method="POST">
+        <form action="proses_tambah_m_admin.php" method="POST">
             <div>
                 <label for="nama_materi">Nama Materi:</label>
                 <input type="text" id="nama_materi" name="nama_materi" required>
