@@ -23,19 +23,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $gender = $_POST['gender'];
 
+    // Cek apakah ada file yang diunggah
+    if ($_FILES['foto_profil']['name']) {
+        // Lokasi penyimpanan gambar
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["foto_profil"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        // Periksa apakah file yang diunggah adalah gambar
+        $check = getimagesize($_FILES["foto_profil"]["tmp_name"]);
+        if ($check === false) {
+            echo "File bukan gambar.";
+            $uploadOk = 0;
+        }
+
+        // Periksa ukuran file (misalnya maksimum 500KB)
+        if ($_FILES["foto_profil"]["size"] > 500000) {
+            echo "File terlalu besar.";
+            $uploadOk = 0;
+        }
+
+        // Izinkan format tertentu
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+            echo "Hanya format JPG, JPEG, PNG, dan GIF yang diperbolehkan.";
+            $uploadOk = 0;
+        }
+
+        // Cek apakah upload ok
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($_FILES["foto_profil"]["tmp_name"], $target_file)) {
+                echo "File " . htmlspecialchars(basename($_FILES["foto_profil"]["name"])) . " telah diunggah.";
+            } else {
+                echo "Terjadi kesalahan saat mengunggah file.";
+            }
+        }
+    }
+
     // Update data dalam database
-    $sql = "UPDATE pelajar SET username=?, nama_depan=?, nama_belakang=?, email_pelajar=?, jenis_kelamin=? WHERE username=?";
+    $sql = "UPDATE pelajar SET username=?, nama_depan=?, nama_belakang=?, email_pelajar=?, jenis_kelamin=?, foto_profil=? WHERE username=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $newUsername, $firstName, $lastName, $email, $gender, $currentUsername);
-    
+    $stmt->bind_param("sssssss", $newUsername, $firstName, $lastName, $email, $gender, $target_file, $currentUsername);
+
     if ($stmt->execute()) {
         // Update username di session jika username berubah
         if ($newUsername !== $currentUsername) {
             $_SESSION['username'] = $newUsername;
         }
 
-        echo "Profil berhasil diperbarui!";
-        header("Location: profil_pelajar.php");
+        $successMessage = "Profil berhasil diperbarui!";
+        // header("Location: profil_pelajar.php"); // Redirect setelah update
     } else {
         echo "Terjadi kesalahan saat memperbarui profil: " . $stmt->error;
     }
@@ -44,11 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Ambil data pelajar dari database
-$sql = "SELECT username, nama_depan, nama_belakang, email_pelajar, jenis_kelamin FROM pelajar WHERE username = ?";
+$sql = "SELECT username, nama_depan, nama_belakang, email_pelajar, jenis_kelamin, foto_profil FROM pelajar WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $currentUsername);
 $stmt->execute();
-$stmt->bind_result($userName, $firstName, $lastName, $email, $gender);
+$stmt->bind_result($userName, $firstName, $lastName, $email, $gender, $fotoProfil);
 $stmt->fetch();
 $stmt->close();
 $conn->close();
@@ -91,7 +128,7 @@ $conn->close();
             font-weight: bold;
             margin-bottom: 5px;
         }
-        .form-group input[type="text"], .form-group select {
+        .form-group input[type="text"], .form-group input[type="file"], .form-group select {
             width: calc(100% - 12px);
             padding: 8px;
             border: 1px solid #ccc;
@@ -136,7 +173,16 @@ $conn->close();
         .back-button a:hover {
             text-decoration: underline;
         }
-        /* CSS untuk pop-up */
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            object-fit: cover;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .popup {
             display: none;
             position: absolute;
@@ -156,8 +202,11 @@ $conn->close();
 <body>
     <div class="container">
         <h2>Edit Profil Pelajar</h2>
-        <div id="popup" class="popup">Profil berhasil diperbarui!</div> <!-- Pop-up notifikasi -->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <?php if ($successMessage): ?>
+            <div id="popup" class="popup"><?php echo $successMessage; ?></div>
+        <?php endif; ?>
+        <img src="<?php echo htmlspecialchars($fotoProfil); ?>" alt="Foto Profil" class="profile-picture">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($userName); ?>">
@@ -177,30 +226,29 @@ $conn->close();
             <div class="form-group">
                 <label for="gender">Jenis Kelamin:</label>
                 <select id="gender" name="gender">
-                    <option value="L" <?php if ($gender === 'L') echo 'selected'; ?>>Laki-laki</option>
-                    <option value="P" <?php if ($gender === 'P') echo 'selected'; ?>>Perempuan</option>
+                    <option value="L" <?php if ($gender === 'L') echo 'selected'; ?>>Pria</option>
+                    <option value="P" <?php if ($gender === 'P') echo 'selected'; ?>>Wanita</option>
                 </select>
             </div>
             <div class="form-group">
-                <button type="submit" onclick="showPopup()">Simpan Perubahan</button>
+                <label for="foto_profil">Foto Profil:</label>
+                <input type="file" id="foto_profil" name="foto_profil">
+            </div>
+            <div class="form-group">
+                <button type="submit">Simpan Perubahan</button>
             </div>
         </form>
         <div class="back-button">
             <a href="profil_pelajar.php">Kembali ke Profil</a>
         </div>
-        <div class="logout">
-            <a href="logout.php">Logout</a>
-        </div>
     </div>
     <script>
-        function showPopup() {
-            <?php if ($successMessage): ?>
-                document.getElementById('popup').style.display = 'block';
-                setTimeout(function() {
-                    document.getElementById('popup').style.display = 'none';
-                }, 3000);
-            <?php endif; ?>
-        }
+        <?php if ($successMessage): ?>
+            document.getElementById('popup').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('popup').style.display = 'none';
+            }, 3000);
+        <?php endif; ?>
     </script>
 </body>
 </html>

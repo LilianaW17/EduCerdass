@@ -10,11 +10,43 @@ $username = $_SESSION['username'];
 
 include 'koneksi.php';
 
-$riwayat_quiz = [
-    ["nama_quiz" => "Quiz Basic PHP", "score" => 90],
-    ["nama_quiz" => "Quiz Basic Javascript", "score" => 83]
-];
+// Ambil pelajar_id berdasarkan username yang login
+$sql = "SELECT pelajar_id FROM pelajar WHERE username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $pelajar_id = $row['pelajar_id'];
+} else {
+    echo "Pelajar tidak ditemukan.";
+    exit();
+}
+$stmt->close();
+
+// Ambil data nilai dan nama quiz dari tabel nilai dan quiz
+$sql = "
+    SELECT q.nama_quiz, n.nilai_quiz
+    FROM nilai n
+    JOIN quiz q ON n.quiz_id = q.quiz_id
+    WHERE n.pelajar_id = ?
+";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $pelajar_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$riwayat_quiz = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $riwayat_quiz[] = $row;
+    }
+} else {
+    $riwayat_quiz[] = ["nama_quiz" => "Tidak ada nilai tersedia", "nilai_quiz" => ""];
+}
+$stmt->close();
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -41,7 +73,7 @@ $conn->close();
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Tambahkan untuk mengatur posisi tombol ke tengah */
+            text-align: center;
         }
 
         h1 {
@@ -100,14 +132,14 @@ $conn->close();
             <thead>
                 <tr>
                     <th>Nama Quiz</th>
-                    <th>Score</th>
+                    <th>Nilai</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach($riwayat_quiz as $quiz): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($quiz['nama_quiz']); ?></td>
-                        <td><?php echo htmlspecialchars($quiz['score']); ?></td>
+                        <td><?php echo htmlspecialchars($quiz['nilai_quiz']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

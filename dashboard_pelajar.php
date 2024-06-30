@@ -25,14 +25,12 @@ if ($result->num_rows > 0) {
     exit();
 }
 
-// Fungsi logout
 if (isset($_POST['logout'])) {
     session_destroy();
     header("Location: login.php");
     exit();
 }
 
-// Tutup koneksi
 $stmt->close();
 $conn->close();
 ?>
@@ -171,10 +169,6 @@ $conn->close();
             <div class="selectors" onclick="window.location.href='quiz_pelajar.php'">
                 <i class="fas fa-question-circle"></i>
                 <div>Quiz</div>
-            </div>
-            <div class="selectors" onclick="window.location.href='exams_pelajar.php'">
-                <i class="fas fa-file-alt"></i>
-                <div>Exams</div>
             </div>
             <div class="selectors" onclick="window.location.href='profil_pelajar.php'">
                 <i class="fas fa-user"></i>
