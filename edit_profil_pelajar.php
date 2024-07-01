@@ -212,8 +212,8 @@ $conn->close();
             <div class="form-group">
                 <label for="gender">Jenis Kelamin:</label>
                 <select id="gender" name="gender">
-                    <option value="L" <?php if ($gender === 'L') echo 'selected'; ?>>Pria</option>
-                    <option value="P" <?php if ($gender === 'P') echo 'selected'; ?>>Wanita</option>
+                    <option value="Pria" <?php if ($gender === 'Pria') echo 'selected'; ?>>Pria</option>
+                    <option value="Wanita" <?php if ($gender === 'Wanita') echo 'selected'; ?>>Wanita</option>
                 </select>
             </div>
             <div class="form-group">
